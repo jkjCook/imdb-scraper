@@ -20,9 +20,12 @@ for index in range (0, len(urls)):
     page = requests.get(urls[index])
     tree = html.fromstring(page.content)
     d = {}
-
+                        
     title = tree.xpath('//*[@id="title-overview-widget"]/div[2]/div[2]/div/div[2]/div[2]/h1/text()')
     title = ''.join(title).lstrip().rstrip()
+    if title == "":
+        title = tree.xpath('//*[@id="title-overview-widget"]/div[2]/div[2]/div/div/div[2]/h1/text()')
+        title = ''.join(title).lstrip().rstrip()
     d['title'] = title
 
     year = tree.xpath('//*[@id="titleYear"]/a/text()')
@@ -66,8 +69,7 @@ for index in range (0, len(urls)):
         for i in range(1, 4):
             if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span[' + str(i) +']/a/span/text()'):
                 writers.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span[' + str(i) +']/a/span/text()'))
-            if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span/a/span/text()'):
-                writers.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span/a/span/text()'))
+            
            
         d['writers'] = writers
         
@@ -104,14 +106,13 @@ for index in range (0, len(urls)):
         for i in range(1, 4):
             if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[3]/span[' + str(i) + ']/a/span/text()'):
                 writers.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[3]/span[' + str(i) + ']/a/span/text()'))
-            if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[3]/span/a/span/text():
-                 writers.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[3]/span/a/span/text()'))
+            
         d['writers'] = writers
-        
+
         stars = []
         for i in range (1, 4):
             if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[4]/span[' + str(i) + ']/a/span/text()'):
-                stars.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[4]/span[' + str(i) + ']/a/span'))
+                stars.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[4]/span[' + str(i) + ']/a/span/text()'))
         d['stars'] = stars
 
         d['trailer'] = 'N/A'
