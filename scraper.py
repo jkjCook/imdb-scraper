@@ -39,42 +39,82 @@ for index in range (0, len(urls)):
             genres.append(tree.xpath('//*[@id="title-overview-widget"]/div[2]/div[2]/div/div[2]/div[2]/div/a[' + str(i) + ']/span/text()'))
     d['genres'] = genres
 
-    poster = tree.xpath('//*[@id="title-overview-widget"]/div[2]/div[3]/div[1]/a/img/@src')
-    poster = ''.join(poster).lstrip()
-    d['poster'] = poster
-
     userRating = tree.xpath('//*[@id="title-overview-widget"]/div[2]/div[2]/div/div[1]/div[1]/div[1]/strong/span/text()')
     userRating = ''.join(userRating).lstrip()
     d['userRating'] = userRating
 
-    metaScore = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/a/div/span/text()')
-    metaScore = ''.join(metaScore).lstrip()
-    d['metaScore'] = metaScore
+    # For newer layouts of IMDb
+    if tree.xpath('//*[@id="title-overview-widget"]/div[2]/div[3]/div[2]/a/img'):
 
-    synopsis = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[1]/text()')
-    synopsis = ''.join(synopsis).lstrip().rstrip()
-    d['synopsis'] = synopsis
+        poster = tree.xpath('//*[@id="title-overview-widget"]/div[2]/div[3]/div[1]/a/img/@src')
+        poster = ''.join(poster).lstrip()
+        d['poster'] = poster
 
-    director = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[2]/span/a/span/text()')
-    director = ''.join(director).lstrip()
-    d['director'] = director
+        metaScore = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/a/div/span/text()')
+        metaScore = ''.join(metaScore).lstrip()
+        d['metaScore'] = metaScore
 
-    writers = []
-    for i in range(1, 5):
-        if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span[' + str(i) +']/a/span/text()'):
-            writers.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span[' + str(i) +']/a/span/text()'))
-    d['writers'] = writers
+        synopsis = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[1]/text()')
+        synopsis = ''.join(synopsis).lstrip().rstrip()
+        d['synopsis'] = synopsis
+
+        director = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[2]/span/a/span/text()')
+        director = ''.join(director).lstrip()
+        d['director'] = director
+
+        writers = []
+        for i in range(1, 4):
+            if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span[' + str(i) +']/a/span/text()'):
+                writers.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span[' + str(i) +']/a/span/text()'))
+            if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span/a/span/text()'):
+                writers.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[3]/span/a/span/text()'))
+           
+        d['writers'] = writers
+        
+        stars = []
+        for i in range (1, 4):
+            if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[4]/span['+ str(i) +']/a/span/text()'):
+                stars.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[4]/span['+ str(i) +']/a/span/text()'))
+        d['stars'] = stars
+
+        trailer = tree.xpath('//*[@id="title-overview-widget"]/div[2]/div[3]/div[2]/a/@data-video')
+        trailer = ''.join(trailer).lstrip().rstrip()
+        trailer = str('http://www.imdb.com/videoembed/' + trailer)
+        d['trailer'] = trailer
     
-    stars = []
-    for i in range (1, 4):
-        if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[4]/span['+ str(i) +']/a/span/text()'):
-            stars.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/div[4]/span['+ str(i) +']/a/span/text()'))
-    d['stars'] = stars
+    # For older layouts of IMDb
+    else:
+        poster = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[1]/a/img/@src')
+        poster = ''.join(poster).lstrip()
+        d['poster'] = poster
 
-    trailer = tree.xpath('//*[@id="title-overview-widget"]/div[2]/div[3]/div[2]/a/@data-video')
-    trailer = ''.join(trailer).lstrip().rstrip()
-    trailer = str('http://www.imdb.com/videoembed/' + trailer)
-    d['trailer'] = trailer
+        metaScore = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[2]/div[1]/a/div/span/text()')
+        metaScore = ''.join(metaScore).lstrip()
+        d['metaScore'] = metaScore
+
+        synopsis = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[2]/div[1]/a/div/span/text()')
+        synopsis = ''.join(synopsis).lstrip().rstrip()
+        d['synopsis'] = synopsis
+
+        director = tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[2]/span/a/span/text()')
+        director = ''.join(director).lstrip()
+        d['director'] = director
+
+        writers = []
+        for i in range(1, 4):
+            if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[3]/span[' + str(i) + ']/a/span/text()'):
+                writers.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[3]/span[' + str(i) + ']/a/span/text()'))
+            if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[3]/span/a/span/text():
+                 writers.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[3]/span/a/span/text()'))
+        d['writers'] = writers
+        
+        stars = []
+        for i in range (1, 4):
+            if tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[4]/span[' + str(i) + ']/a/span/text()'):
+                stars.append(tree.xpath('//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[4]/span[' + str(i) + ']/a/span'))
+        d['stars'] = stars
+
+        d['trailer'] = 'N/A'
 
     # Dump dictionary to JSON file
     with open(sys.argv[2], 'a+') as wFILE:
