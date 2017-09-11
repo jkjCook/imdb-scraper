@@ -1,2 +1,1 @@
-http://www.imdb.com/search/title?genres=horror&title_type=feature&sort=moviemeter,asc
-http://www.imdb.com/search/title?genres=comedy&title_type=feature&sort=moviemeter,asc
+http://www.imdb.com/search/title?title_type=feature&primary_language=en&sort=moviemeter,asc
